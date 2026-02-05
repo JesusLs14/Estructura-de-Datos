@@ -59,7 +59,22 @@ if buscar_mes in meses:
 else:
     print("❌ Mes no encontrado.")
 
+def eliminar_venta():
+    print("\n--- ELIMINAR UNA VENTA ---")
+    
+    mes = int(input("Ingresa el número de mes (1 a 12): "))
+    depto = int(input("Departamento (1=Ropa, 2=Deportes, 3=Juguetería): "))
+    
+    if 1 <= mes <= 12 and 1 <= depto <= 3:
+        print(f"Venta actual: {ventas[mes-1][depto-1]}")
+        ventas[mes-1][depto-1] = 0
+        print("✅ Venta eliminada correctamente (valor = 0).")
+    else:
+        print("❌ Mes o departamento inválido.")
+
+
 # -----------------------------
 # Mostrar tabla final
 # -----------------------------
 mostrar_tabla()
+
