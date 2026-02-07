@@ -1,80 +1,67 @@
-# Departamentos (columnas)
-departamentos = ["Ropa", "Deportes", "Juguetería"]
+class VentasDepartamentos:
+    def __init__(self):
 
-# Meses (filas)
-meses = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-]
+        self.departamentos = ["Ropa", "Deportes", "Juguetería"]
+        
+        self.meses = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ]
+        
+        self.ventas = [[0 for _ in self.departamentos] for _ in self.meses]
 
-# Arreglo bidimensional
-ventas = []
-
-# -----------------------------
-# Captura inicial de datos
-# -----------------------------
-for mes in meses:
-    fila = []
-    print(f"\nIngresando ventas para {mes}:")
-    for depto in departamentos:
-        monto = float(input(f"  Venta en {depto}: "))
-        fila.append(monto)
-    ventas.append(fila)
-
-# -----------------------------
-# Mostrar tabla completa
-# -----------------------------
-def mostrar_tabla():
-    print("\nMes\t\tRopa\tDeportes\tJuguetería")
-    for i in range(len(meses)):
-        print(f"{meses[i]:<10}\t{ventas[i][0]}\t{ventas[i][1]}\t\t{ventas[i][2]}")
-
-mostrar_tabla()
-
-# -----------------------------
-# Modificar un valor
-# -----------------------------
-print("\n--- MODIFICAR UNA VENTA ---")
-mes_mod = int(input("Ingresa el número de mes (1 a 12): "))
-dep_mod = int(input("Departamento (1=Ropa, 2=Deportes, 3=Juguetería): "))
-
-if 1 <= mes_mod <= 12 and 1 <= dep_mod <= 3:
-    nuevo_valor = float(input("Ingresa el nuevo monto: "))
-    ventas[mes_mod - 1][dep_mod - 1] = nuevo_valor
-    print("✅ Venta modificada correctamente.")
-else:
-    print("❌ Mes o departamento inválido.")
-
-# -----------------------------
-# Buscar un mes en particular
-# -----------------------------
-print("\n--- BUSCAR UN MES ---")
-buscar_mes = input("Ingresa el nombre del mes (ej. Marzo): ").capitalize()
-
-if buscar_mes in meses:
-    indice = meses.index(buscar_mes)
-    print(f"\nVentas de {buscar_mes}:")
-    for i in range(len(departamentos)):
-        print(f"{departamentos[i]}: {ventas[indice][i]}")
-else:
-    print("❌ Mes no encontrado.")
-
-def eliminar_venta():
-    print("\n--- ELIMINAR UNA VENTA ---")
-    
-    mes = int(input("Ingresa el número de mes (1 a 12): "))
-    depto = int(input("Departamento (1=Ropa, 2=Deportes, 3=Juguetería): "))
-    
-    if 1 <= mes <= 12 and 1 <= depto <= 3:
-        print(f"Venta actual: {ventas[mes-1][depto-1]}")
-        ventas[mes-1][depto-1] = 0
-        print("✅ Venta eliminada correctamente (valor = 0).")
-    else:
-        print("❌ Mes o departamento inválido.")
+    def insertar_venta(self, mes, departamento, monto):
+        if mes in self.meses and departamento in self.departamentos:
+            fila = self.meses.index(mes)
+            columna = self.departamentos.index(departamento)
+            self.ventas[fila][columna] = monto
+            print(f"Venta insertada: {mes} - {departamento} = ${monto}")
+        else:
+            print("Mes o departamento inválido")
 
 
-# -----------------------------
-# Mostrar tabla final
-# -----------------------------
-mostrar_tabla()
+    def buscar_venta(self, mes, departamento):
+        if mes in self.meses and departamento in self.departamentos:
+            fila = self.meses.index(mes)
+            columna = self.departamentos.index(departamento)
+            monto = self.ventas[fila][columna]
+            print(f"Venta encontrada: {mes} - {departamento} = ${monto}")
+            return monto
+        else:
+            print("Mes o departamento inválido")
+            return None
 
+    def eliminar_venta(self, mes, departamento):
+        if mes in self.meses and departamento in self.departamentos:
+            fila = self.meses.index(mes)
+            columna = self.departamentos.index(departamento)
+            self.ventas[fila][columna] = 0
+            print(f"Venta eliminada: {mes} - {departamento}")
+        else:
+            print("Mes o departamento inválido")
+
+    def mostrar_tabla(self):
+        print("\nTabla de Ventas Mensuales")
+        print("Mes".ljust(12), end="")
+        for d in self.departamentos:
+            print(d.ljust(15), end="")
+        print()
+
+        for i, mes in enumerate(self.meses):
+            print(mes.ljust(12), end="")
+            for venta in self.ventas[i]:
+                print(str(venta).ljust(15), end="")
+            print()
+
+
+ventas = VentasDepartamentos()
+
+ventas.insertar_venta("Enero", "Ropa", 15000)
+ventas.insertar_venta("Enero", "Deportes", 8000)
+ventas.insertar_venta("Febrero", "Juguetería", 12000)
+
+ventas.buscar_venta("Enero", "Ropa")
+
+ventas.eliminar_venta("Enero", "Deportes")
+
+ventas.mostrar_tabla()
