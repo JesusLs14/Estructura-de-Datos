@@ -1,0 +1,1 @@
+Bueno haciendo las pruebas del programa tal y como decía la asignación, logro ejecutarse correctamente en mi maquina hasta que llegue al punto de 100000 alumnos y 100000 materias, ahí mi idle visual studio code ya no lo corrió, no me dijo ningún problema simplemente se quedo cargando.
