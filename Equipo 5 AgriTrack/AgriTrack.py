@@ -1712,7 +1712,7 @@ class SistemaFinancieroAgricolaSeguro:
         text.config(state='disabled')
 
     def crear_tab_proveedores(self):
-            # --- INICIO NUEVO: Contenedor con Scroll para toda la pestaña ---
+
             canvas_main = tk.Canvas(self.tab_proveedores)
             scrollbar_main = ttk.Scrollbar(self.tab_proveedores, orient="vertical", command=canvas_main.yview)
             scrollable_frame = ttk.Frame(canvas_main)
@@ -1724,7 +1724,6 @@ class SistemaFinancieroAgricolaSeguro:
 
             frame_id = canvas_main.create_window((0, 0), window=scrollable_frame, anchor="nw")
             
-            # Esto asegura que el frame interno ocupe todo el ancho disponible
             def on_canvas_configure(event):
                 canvas_main.itemconfig(frame_id, width=event.width)
             canvas_main.bind("<Configure>", on_canvas_configure)
@@ -1733,10 +1732,10 @@ class SistemaFinancieroAgricolaSeguro:
 
             canvas_main.pack(side="left", fill="both", expand=True)
             scrollbar_main.pack(side="right", fill="y")
-            # --- FIN NUEVO ---
+
 
             frame_instrucciones = ttk.LabelFrame(
-                scrollable_frame, # Modificado: ahora se asigna al scrollable_frame
+                scrollable_frame, 
                 text="🏪 Catálogo de Proveedores",
                 padding=15
             )
@@ -1750,7 +1749,7 @@ class SistemaFinancieroAgricolaSeguro:
             
             if self.puede_modificar():
                 frame_form = ttk.LabelFrame(
-                    scrollable_frame, # Modificado: ahora se asigna al scrollable_frame
+                    scrollable_frame, 
                     text="➕ Agregar/Editar Proveedor",
                     padding=15
                 )
@@ -1891,11 +1890,11 @@ class SistemaFinancieroAgricolaSeguro:
                 ).pack(side='left', padx=5)
             
             frame_lista = ttk.LabelFrame(
-                scrollable_frame, # Modificado: ahora se asigna al scrollable_frame
+                scrollable_frame, 
                 text="📋 Lista de Proveedores",
                 padding=10
             )
-            # Hacemos que la tabla tenga una altura mínima para no aplastarse con el scroll
+  
             frame_lista.pack(fill='both', expand=True, padx=10, pady=10, ipady=100) 
             
             scroll_y = ttk.Scrollbar(frame_lista, orient='vertical')
