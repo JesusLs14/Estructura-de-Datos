@@ -1,1 +1,5 @@
-
+1. Solución Iterativa
+Ventajas: Es mucho más rápida y eficiente. No corre el riesgo de agotar la memoria de la pila del sistema (Stack Overflow). Es la forma recomendada para calcular la secuencia en entornos de producción.
+2. Solución Recursiva Clásica 
+Ventajas: El código es mucho más limpio, elegante y se lee casi exactamente como la definición matemática de la secuencia de Fibonacci. Es excelente para fines pedagógicos y para entender el paradigma de "divide y vencerás".
+Desventajas: El gran problema de esta recursividad pura es que recalcula los mismos valores una y otra vez.
