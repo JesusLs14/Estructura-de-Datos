@@ -1623,18 +1623,24 @@ class SistemaFinancieroAgricolaSeguro:
                     label.config(text="")
 
     def guardar_presupuesto_mes(self):
-        if not self.puede_modificar():
-            messagebox.showerror("Error", "No tiene permisos para guardar presupuestos")
-            return
-            
-        mes = self.combo_mes_presupuesto.get()
-        if mes not in self.presupuesto_mensual_por_mes: self.presupuesto_mensual_por_mes[mes] = {}
-        for categoria, entry in self.presupuesto_mensual_entries.items():
-            try: self.presupuesto_mensual_por_mes[mes][categoria] = float(entry.get())
-            except ValueError: return messagebox.showerror("Error", f"Monto inválido en '{categoria}'")
-        self.guardar_datos()
-        self.registrar_actividad("Guardar presupuesto", f"Mes: {mes}")
-        messagebox.showinfo("Éxito", f"Presupuesto de {mes} guardado correctamente")
+            if not self.puede_modificar():
+                messagebox.showerror("Error", "No tiene permisos para guardar presupuestos")
+                return
+                
+            mes = self.combo_mes_presupuesto.get()
+            if mes not in self.presupuesto_mensual_por_mes: self.presupuesto_mensual_por_mes[mes] = {}
+            for categoria, entry in self.presupuesto_mensual_entries.items():
+                try: 
+                    monto = float(entry.get())
+                    if monto < 0:
+                        return messagebox.showerror("Error", f"El monto en '{categoria}' no puede ser negativo")
+                    self.presupuesto_mensual_por_mes[mes][categoria] = monto
+                except ValueError: 
+                    return messagebox.showerror("Error", f"Monto inválido en '{categoria}'")
+                    
+            self.guardar_datos()
+            self.registrar_actividad("Guardar presupuesto", f"Mes: {mes}")
+            messagebox.showinfo("Éxito", f"Presupuesto de {mes} guardado correctamente")
 
     def modificar_presupuesto_categoria(self, categoria):
         if not self.puede_modificar():
@@ -1677,18 +1683,24 @@ class SistemaFinancieroAgricolaSeguro:
         ttk.Button(ventana, text="Copiar", command=copiar).pack(pady=10)
 
     def aplicar_a_todos_meses(self):
-        if not self.puede_modificar():
-            messagebox.showerror("Error", "No tiene permisos para aplicar presupuestos")
-            return
-            
-        if messagebox.askyesno("Confirmar", "¿Aplicar este presupuesto a todos los meses?"):
-            presupuesto_actual = {}
-            for categoria, entry in self.presupuesto_mensual_entries.items():
-                try: presupuesto_actual[categoria] = float(entry.get())
-                except: return messagebox.showerror("Error", "Montos inválidos")
-            for mes in self.meses: self.presupuesto_mensual_por_mes[mes] = presupuesto_actual.copy()
-            self.guardar_datos()
-            messagebox.showinfo("Éxito", "Presupuesto aplicado a todos los meses")
+            if not self.puede_modificar():
+                messagebox.showerror("Error", "No tiene permisos para aplicar presupuestos")
+                return
+                
+            if messagebox.askyesno("Confirmar", "¿Aplicar este presupuesto a todos los meses?"):
+                presupuesto_actual = {}
+                for categoria, entry in self.presupuesto_mensual_entries.items():
+                    try: 
+                        monto = float(entry.get())
+                        if monto < 0:
+                            return messagebox.showerror("Error", f"El monto en '{categoria}' no puede ser negativo")
+                        presupuesto_actual[categoria] = monto
+                    except: 
+                        return messagebox.showerror("Error", "Montos inválidos")
+                        
+                for mes in self.meses: self.presupuesto_mensual_por_mes[mes] = presupuesto_actual.copy()
+                self.guardar_datos()
+                messagebox.showinfo("Éxito", "Presupuesto aplicado a todos los meses")
 
     def mostrar_resumen_anual(self):
         ventana = tk.Toplevel(self.root)
@@ -2238,8 +2250,11 @@ class SistemaFinancieroAgricolaSeguro:
 
             try:
                 monto = float(monto_str)
+                if monto < 0:
+                    return messagebox.showerror("Error", "El monto no puede ser un número negativo")
             except ValueError:
-                return messagebox.showerror("Error", "Monto inválido")
+                return messagebox.showerror("Error", "Monto inválido")    
+
 
             fecha_obj = datetime.strptime(fecha, '%Y-%m-%d')
             mes = self.meses[fecha_obj.month - 1]
