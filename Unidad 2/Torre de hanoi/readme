@@ -1,1 +1,21 @@
+Mi código de la torre de hanoi maneja 3 métodos
 
+Mostrar estado el cual muestra el estado actual de las 3 torres.
+
+Mover disco  el cual saca un disco de la pila origen y lo pone en la pila destino.
+
+Hanoi recursivo el cual es el algoritmo recursivo que resuelve el problema y actualiza las pilas.
+
+Para 5 discos Problema resuelto con éxito en 31 movimientos
+Tiempo de ejecución: 0.012046 segundos 
+
+Para 10 discos Problema resuelto con éxito en 1023 movimientos
+Tiempo de ejecución: 0.424223 segundos
+
+Para 30 discos tuve que quitar la interfaz grafica aunque solo fuera en terminal ya que si no hubiera terminado en días el proceso, quitándole la interfaz los resultados fueron: 
+Total de movimientos calculados: 1,073,741,823
+Tiempo de ejecución: 155.5821 segundos
+
+Para los 64 discos para mi computadora físicamente es imposible hacerlo pero haciendo un estimado con el algoritmo los resultados para calcular los 18.4 trillones de pasos para los 64 discos tomaría unos 65,000 años trabajando a su máxima velocidad sin descanso.
+
+Mis conclusiones observadas es que definitivamente llega un punto donde poner tantos discos se vuelve imposible de resolver inclusive para la computadora cuántica de hoy en día, inclusive haciendo un cluster de estas se le complicaría, ya que como observe la prueba de 30 discos mi ram subía exponencialmente cada iteración ósea cada movimiento que hacia el algoritmo entonces llegaría el momento en que mi ram se acabaría si tuviera mas discos.
