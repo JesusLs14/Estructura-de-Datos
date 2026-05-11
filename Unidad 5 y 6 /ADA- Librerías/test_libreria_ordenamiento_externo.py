@@ -8,4 +8,4 @@ print("Estado final en consola:", resultado[-1])
 
 # 2. LANZAR LA INTERFAZ (esto abre la ventana de Matplotlib)
 # Puedes pasarle datos iniciales o dejarlo vacío para usar los de defecto
-oe.iniciar_visualizador()
+oe.ejecutar_app)
