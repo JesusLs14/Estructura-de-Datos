@@ -216,7 +216,9 @@ def vista_comparacion(figura, datos: list, seleccionados: list[bool], estado_glo
     estado_global["botones_comp"] = botones; estado_global["temporizador"] = temporizador; redibujar()
 
 
-def iniciar_visualizador(datos_iniciales=None):
+# ... (Todo el código superior de colores, dibujos y renderizadores se queda igual) ...
+
+def iniciar_visualizador(datos_iniciales=None, limite_grafico=50, funcion_terminal=None):
     if datos_iniciales is None:
         datos_iniciales = [45, 12, 67, 23, 89, 34, 56, 78, 91, 5]
     
@@ -279,9 +281,38 @@ def iniciar_visualizador(datos_iniciales=None):
                 datos_archivos[arg] = {"valores": datos, "nombre": nombre}
                 comb = datos_archivos["1"]["valores"] + datos_archivos["2"]["valores"]
                 noms = [f"A{k}:{v['nombre']}" for k, v in datos_archivos.items() if v["valores"]]
-                datos_actuales.update({"valores": comb if comb else datos_iniciales[:], "nombre": " + ".join(noms) if comb else "datos iniciales"})
+                
+                nuevo_arreglo = comb if comb else datos_iniciales[:]
+                nuevo_nombre = " + ".join(noms) if comb else "datos iniciales"
+                
+                # --- AQUÍ OCURRE LA MAGIA DEL SALTO A TERMINAL ---
+                if len(nuevo_arreglo) > limite_grafico and funcion_terminal:
+                    estado["temporizador"].stop()
+                    
+                    # Mostrar ventana de aviso
+                    import tkinter as tk
+                    from tkinter import messagebox
+                    raiz = tk.Tk()
+                    raiz.withdraw()
+                    raiz.attributes("-topmost", True)
+                    messagebox.showinfo(
+                        "Límite Gráfico Superado",
+                        f"Se han acumulado {len(nuevo_arreglo)} números.\n"
+                        f"El límite gráfico seguro es {limite_grafico}.\n\n"
+                        "La interfaz gráfica se cerrará ahora y el ordenamiento masivo continuará a máxima velocidad en la terminal."
+                    )
+                    raiz.destroy()
+                    
+                    # Cerrar Matplotlib y mandar el trabajo a la terminal
+                    plt.close(figura)
+                    funcion_terminal(nuevo_arreglo, nuevo_nombre)
+                    return
+                # --------------------------------------------------
+
+                datos_actuales.update({"valores": nuevo_arreglo, "nombre": nuevo_nombre})
                 cargar_demo(estado["seleccionado"])
                 ax_vis.text(0.5, 0.02, f"✔ Archivo {arg} cargado (Numérico).", ha="center", va="bottom", fontsize=8, color=ACENTO2, transform=ax_vis.transAxes, fontfamily="monospace")
+        
         elif op == "comp":
             sel = check.get_status()
             estado["temporizador"].stop(); vista_comparacion(figura, normalizar_datos(datos_actuales["valores"]), sel if any(sel) else [True]*3, estado)
@@ -290,6 +321,7 @@ def iniciar_visualizador(datos_iniciales=None):
             estado["reproduciendo"] = True; botones[1].label.set_text("⏸ Pausar"); cargar_demo(etiquetas_radio.index(arg))
         figura.canvas.draw_idle()
 
+    # ... (El resto del código con los .on_clicked se queda exactamente igual) ...
     botones[0].on_clicked(lambda _: accion("prev")); botones[1].on_clicked(lambda _: accion("play")); botones[2].on_clicked(lambda _: accion("next"))
     botones[3].on_clicked(lambda _: accion("rst")); botones[4].on_clicked(lambda _: accion("arch", "1")); botones[5].on_clicked(lambda _: accion("arch", "2"))
     botones[6].on_clicked(lambda _: accion("comp")); radio.on_clicked(lambda lbl: accion("rad", lbl))
