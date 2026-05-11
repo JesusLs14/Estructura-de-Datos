@@ -1,5 +1,6 @@
 # Estructura-de-Datos/ordenamiento_externo/__init__.py
 
+from .controlador import ejecutar_app
 from .interfaz_grafica import iniciar_visualizador
 from .algoritmos_mezcla import (
     ordenar_intercalacion, 
@@ -9,6 +10,7 @@ from .algoritmos_mezcla import (
 from .manejador_archivos import cargar_archivo
 
 __all__ = [
+    "ejecutar_app",
     "iniciar_visualizador",
     "ordenar_intercalacion",
     "generar_pasadas_mezcla_directa",
